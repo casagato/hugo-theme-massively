@@ -2,14 +2,12 @@
 {{ $data := index .Site.Data .Site.Language.Lang }}
 <nav id="nav">
     <ul class="links">
-        <li class="active"><a href='{{ "/" | relLangURL }}'>{{ .Site.Title }}</a></li>
         {{ with $data.contactinfo }}
         <li><a href='{{ "#footer" | relLangURL }}'>{{ i18n "NAV_CONTACT" . }}</a></li>
         {{ end }}
-        {{ if .IsTranslated }}
-        {{ range .AllTranslations }}
-        <li {{if eq ($.Site.Language) (.Language)}}class="active"{{end}}><a href='{{ .Permalink }}'>{{ .Language.LanguageName }}</a></li>
-        {{ end }}
+        {{ $currentPage := . }}
+        {{ range .Site.Menus.main }}
+        <li class="{{ if $currentPage.IsMenuCurrent "main" . }}active{{ end }}"> <a class="sidebar-nav-item" href="{{ .URL }}" title="{{ .Title }}">{{ .Name }}</a></li>
         {{ end }}
     </ul>
     {{ with $data.social }}
@@ -44,3 +42,4 @@
     </ul>
     {{ end }}
 </nav>
+
